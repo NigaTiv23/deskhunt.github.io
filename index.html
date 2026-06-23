@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeskHunt — Охота за идеальным столом</title>
+<meta name="description" content="Ищу идеальные рабочие места и людей, которые их создали. Эргономика, кабели, свет, девайсы.">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #cc1f1f;
+    --red-dark: #aa1515;
+    --red-dim: rgba(204,31,31,0.12);
+    --bg: #0a0a0a;
+    --bg-card: #111111;
+    --bg-card-hover: #160404;
+    --border: rgba(204,31,31,0.15);
+    --border-hover: rgba(204,31,31,0.35);
+    --text: #e0e0e0;
+    --text-muted: #777;
+    --text-dim: #444;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    border-bottom: 0.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(204,31,31,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .logo {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', serif;
+    font-size: clamp(48px, 10vw, 80px);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--red);
+    line-height: 1;
+    position: relative;
+  }
+
+  .logo sup {
+    font-size: 0.3em;
+    vertical-align: super;
+    letter-spacing: 3px;
+    opacity: 0.5;
+    font-style: normal;
+  }
+
+  .tagline-hero {
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--red);
+    opacity: 0.55;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  .hero-desc {
+    max-width: 520px;
+    margin: 2rem auto 0;
+    font-size: 17px;
+    color: #aaa;
+    line-height: 1.75;
+  }
+
+  .hero-desc strong { color: var(--red); font-weight: 500; }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 13px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--red-dark); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--red);
+    border: 0.5px solid var(--border-hover);
+    padding: 13px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover { background: var(--red-dim); }
+
+  /* SECTIONS */
+  section { padding: 3.5rem 2rem; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--red);
+    opacity: 0.5;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .about-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .about-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+  }
+
+  .about-card .icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .about-card h3 {
+    font-size: 15px;
+    font-weight: 500;
+    color: #ddd;
+    margin-bottom: 6px;
+  }
+
+  .about-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* TROPHY SECTION */
+  .trophy-block {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .trophy-block .big-icon { font-size: 48px; margin-bottom: 1rem; display: block; }
+
+  .trophy-block h2 {
+    font-family: 'Palatino Linotype', Palatino, serif;
+    font-size: 26px;
+    font-style: italic;
+    color: var(--red);
+    margin-bottom: 1rem;
+  }
+
+  .trophy-block p {
+    font-size: 15px;
+    color: #999;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .criteria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    background: var(--red-dim);
+    color: var(--red);
+    border: 0.5px solid rgba(204,31,31,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  /* LINKS */
+  .links-list {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .link-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+  }
+
+  .link-icon {
+    width: 42px; height: 42px;
+    background: var(--red-dim);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .link-info { flex: 1; }
+
+  .link-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #ddd;
+    display: block;
+  }
+
+  .link-handle {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .link-arrow {
+    color: var(--red);
+    opacity: 0.5;
+    font-size: 18px;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: #0d0000;
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .cta-section h2 {
+    font-family: 'Palatino Linotype', Palatino, serif;
+    font-size: clamp(22px, 4vw, 34px);
+    font-style: italic;
+    color: var(--red);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .cta-section p {
+    font-size: 15px;
+    color: #888;
+    max-width: 420px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem;
+    text-align: center;
+    border-top: 0.5px solid var(--border);
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  footer a { color: var(--red); text-decoration: none; opacity: 0.7; }
+  footer a:hover { opacity: 1; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 0;
+  }
+
+  /* MOBILE */
+  @media (max-width: 480px) {
+    .hero { padding: 4rem 1.25rem 3rem; }
+    section { padding: 2.5rem 1.25rem; }
+    .hero-cta { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="logo">DeskHunt</div>
+  <div class="tagline-hero">Hunt your perfect desk</div>
+  <p class="hero-desc">
+    Ищу <strong>идеальные рабочие места</strong> и людей, которые их создали.
+    Эргономика, кабели, свет, девайсы — всё что превращает стол
+    в <strong>инструмент</strong>.
+  </p>
+  <div class="hero-cta">
+    <a href="https://t.me/Desk_Hunt" class="btn-primary">Написать мне</a>
+    <a href="#trophy" class="btn-ghost">Трофей месяца</a>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section>
+  <div class="section-label">Что здесь есть</div>
+  <div class="about-grid">
+    <div class="about-card">
+      <span class="icon">🏆</span>
+      <h3>Трофей месяца</h3>
+      <p>Лучший стол подписчика каждый месяц. Интервью, разбор, советы от автора.</p>
+    </div>
+    <div class="about-card">
+      <span class="icon">🔧</span>
+      <h3>Экипировка охотника</h3>
+      <p>Честные обзоры гаджетов, кресел, органайзеров и аксессуаров.</p>
+    </div>
+    <div class="about-card">
+      <span class="icon">📐</span>
+      <h3>Проектирование</h3>
+      <p>Помогу спроектировать стол под твои задачи и рост. Опыт — личный.</p>
+    </div>
+    <div class="about-card">
+      <span class="icon">⚡</span>
+      <h3>DIY и Arduino</h3>
+      <p>Кастомные решения для эргономики. Умный свет, датчики, автоматизация.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TROPHY -->
+<section id="trophy">
+  <div class="section-label">Конкурс</div>
+  <div class="trophy-block">
+    <span class="big-icon">🎯</span>
+    <h2>#ТрофейМесяца</h2>
+    <p>
+      Каждый месяц выбираю лучший рабочий стол среди подписчиков.
+      Победитель получает пост-интервью и место в закреплённых историях канала.
+    </p>
+    <div class="criteria">
+      <span class="tag">Чистота и порядок</span>
+      <span class="tag">Эргономика</span>
+      <span class="tag">Освещение</span>
+      <span class="tag">Кабели</span>
+      <span class="tag">Индивидуальность</span>
+      <span class="tag">Вдохновение</span>
+    </div>
+    <a href="https://t.me/Desk_Hunt" class="btn-primary">Прислать свой стол</a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Хочешь идеальный стол?</h2>
+  <p>
+    Я прошёл путь от неудобной деревяшки до стола на заказ с пазами,
+    вырезами и продуманной эргономикой. Готов помочь тебе.
+  </p>
+  <a href="https://t.me/Desk_Hunt" class="btn-primary">Написать в Telegram</a>
+</div>
+
+<!-- LINKS -->
+<section>
+  <div class="section-label">Найти меня</div>
+  <div class="links-list">
+    <a href="https://t.me/Desk_Hunt" class="link-card">
+      <div class="link-icon">✈️</div>
+      <div class="link-info">
+        <span class="link-name">Telegram</span>
+        <span class="link-handle">@Desk_Hunt</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://vk.com/desk_hunt" class="link-card">
+      <div class="link-icon">🅱️</div>
+      <div class="link-info">
+        <span class="link-name">ВКонтакте</span>
+        <span class="link-handle">vk.com/desk_hunt</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://www.instagram.com/deskhunt_official/" class="link-card">
+      <div class="link-icon">📸</div>
+      <div class="link-info">
+        <span class="link-name">Instagram</span>
+        <span class="link-handle">@deskhunt_official</span>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>DeskHunt — там, где хаос превращается в порядок &nbsp;·&nbsp; 2025</p>
+</footer>
+
+</body>
+</html>
